@@ -34,7 +34,7 @@ p2egame_list = {
 }
 rank_num = -1
 
-for element in elements:
+for idx , element in enumerate(elements):
     
     if element is not None:
 
@@ -44,15 +44,13 @@ for element in elements:
 
         
         
-        # <a data-original-title="Wemix" data-placement="top" data-toggle="tooltip" href="https://playtoearn.net/blockchaingames/Wemix/All-Genre/All-Status/All-Device/All-NFT/All-PlayToEarn/All-FreeToPlay" title="">
-        #     <div class="lazy platformicon Wemix loaded" data-loader="bgLoader"></div>
-        # </a>
+    
 
         genre_list =[]
         network_list=[]
 
         genres = element.select('td:nth-child(4) > a')
-        genre_num = len(genres)
+        
         for i in genres:
             genre = str(i.string)
             genre_list.append(genre)
@@ -72,8 +70,9 @@ for element in elements:
         p2egame_list['genre'].append(genre_list_str)
         p2egame_list['network'].append(network_list_str)
         
-        rank_num += 1    
-        sheet.append([rank_num,name,genre_list_str,network_list_str])
+        rank_num += 1 
+        if  idx != 0:   
+            sheet.append([rank_num,name,genre_list_str,network_list_str])
 
         print(f"순위: {rank_num}    게임이름: {name}    장르: {genre_list_str}    네트워크: {network_list_str}")
     
@@ -83,5 +82,5 @@ for element in elements:
 
     game_num = len(p2egame_list['name'])
 
-print( str(game_num) + "개")
+print( str(game_num - 1) + "개")
 wb.save("excel_1.xlsx")
