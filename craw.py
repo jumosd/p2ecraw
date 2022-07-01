@@ -115,6 +115,25 @@ for idx , element in enumerate(elements):
         None
 
     game_num = len(p2egame_list['name'])
+    
+    # 이지랄을 페이지를 전부다 탐색해야됨 !!
+    # 이지랄을 페이지를 전부다 탐색해야됨 !!
+    # 이지랄을 페이지를 전부다 탐색해야됨 !!
+    # 이지랄을 페이지를 전부다 탐색해야됨 !!
+    # 이지랄을 페이지를 전부다 탐색해야됨 !!
 
 print( str(game_num - 1) + "개")
-wb.save("excel_1.xlsx")
+# wb.save("excel_1.xlsx")5
+
+#  정규표현식  게임이름 URL에 넣기위해 변형한다
+for idx, game_name in enumerate(p2egame_list['name']):
+    if idx != 0:
+        txt=game_name.replace(' ','-')
+        txt=txt.replace('.','')
+        txt=txt.replace(':','-')
+        txt=txt.replace('!','')
+        print(txt)
+
+
+        detail_pages= f'https://playtoearn.net/blockchaingame/{txt}'
+        print(detail_pages)
