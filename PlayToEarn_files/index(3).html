@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!-- saved from url=(0083)https://cdn.coinzilla.io/html_customers/8e1c636d51a05ad3f0d473ee4e41f5ac/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="authoring-tool" content="Adobe_Animate_CC">
+<title>index</title>
+
+<script src="./YI0GdIJC4MbD85BIlJY4Q1XHvlM.js"></script><script src="./createjs-2015.11.26.min(1).js"></script>
+<script src="./index(1).js"></script>
+<script>
+var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
+function init() {
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	dom_overlay_container = document.getElementById("dom_overlay_container");
+	var comp=AdobeAn.getComposition("E4EE3C05FE19454EB6A259F34156E92A");
+	var lib=comp.getLibrary();
+	var loader = new createjs.LoadQueue(false);
+	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+	var lib=comp.getLibrary();
+	loader.loadManifest(lib.properties.manifest);
+}
+function handleFileLoad(evt, comp) {
+	var images=comp.getImages();	
+	if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
+}
+function handleComplete(evt,comp) {
+	//This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+	var lib=comp.getLibrary();
+	var ss=comp.getSpriteSheet();
+	var queue = evt.target;
+	var ssMetadata = lib.ssMetadata;
+	for(i=0; i<ssMetadata.length; i++) {
+		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+	}
+	exportRoot = new lib.index();
+	stage = new lib.Stage(canvas);
+	stage.enableMouseOver();	
+	//Registers the "tick" event listener.
+	fnStartAnimation = function() {
+		stage.addChild(exportRoot);
+		createjs.Ticker.setFPS(lib.properties.fps);
+		createjs.Ticker.addEventListener("tick", stage);
+	}	    
+	//Code to support hidpi screens and responsive scaling.
+	AdobeAn.makeResponsive(false,'both',false,1,[canvas,anim_container,dom_overlay_container]);	
+	AdobeAn.compositionLoaded(lib.properties.id);
+	fnStartAnimation();
+}
+</script>
+
+</head>
+<body onload="init();" style="margin:0px;" cfapps-selector="body">
+<div id="animation_container" style="background-color:rgba(255, 255, 255, 1.00); width:728px; height:90px">
+<div id="clickTagLayer" style="position: absolute; top: 0; left: 0; z-index: 16777271; width: 100%; height: 100%; cursor: pointer; cursor: hand"></div>
+<canvas id="canvas" width="728" height="90" style="position: absolute; display: block; background-color: rgb(255, 255, 255); width: 728px; height: 90px;"></canvas>
+<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:728px; height:90px; position: absolute; left: 0px; top: 0px; display: block;">
+</div>
+</div>
+<script>
+function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+  var layer = document.getElementById("clickTagLayer");
+  if (layer) {
+    var listen = function(obj, e, fn) { if (obj.addEventListener) { obj.addEventListener(e, fn, false); } else { obj.attachEvent("on"+e, fn); } };    listen(layer, 'click', function (evt) {
+      evt.stopPropagation();
+      try { evt.cancelBubble(); } catch (e) { /* ignore */ }
+  
+        window.open(decodeURIComponent(getUrlVars()['dataUrl']), '_blank');
+    });
+  }
+</script>
+
+<cloudflare-app><script>
+let theCookies = document.cookie.split(';');for (var i = 0 ; i < theCookies.length; i++) {document.cookie = theCookies[i].split('=')[0] + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';}
+</script></cloudflare-app></body></html>

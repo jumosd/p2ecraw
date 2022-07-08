@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<!-- saved from url=(0083)https://cdn.coinzilla.io/html_customers/31fbce47cd82000c01c173ba02d2c65a/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="authoring-tool" content="Adobe_Animate_CC">
+<title>index</title>
+<script src="./YI0GdIJC4MbD85BIlJY4Q1XHvlM.js"></script><script>
+var clickurls = [%clickurls%];
+function callClick(n){
+n = (n || 1) - 1;
+window.open(clickurls[n], "_blank");
+}
+</script>
+<script type="text/javascript">
+	function getWindowSize() {
+
+		var maxWidth = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
+		var minWidth = Math.min(document.documentElement.clientWidth, window.innerWidth || 0);
+		// var maxHeight = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
+		// var minHeight = Math.min(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		var maxHeight = 90;
+		var minHeight = 90;
+
+	    return {
+	        width: Math.min(document.documentElement.clientHeight, window.innerHeight || 0) > maxWidth ? maxWidth : Math.min(document.documentElement.clientHeight, window.innerHeight || 0) < minWidth ? minWidth : Math.min(document.documentElement.clientHeight, window.innerHeight || 0),
+	        height: Math.min(document.documentElement.clientHeight, window.innerHeight || 0) > maxHeight ? maxHeight : Math.min(document.documentElement.clientHeight, window.innerHeight || 0) < minHeight ? minHeight : Math.min(document.documentElement.clientHeight, window.innerHeight || 0)
+	    }
+	};
+</script>
+<script src="./createjs-2015.11.26.min.js"></script>
+<script type="text/javascript">
+	//index.js сюда
+</script>
+<script src="./index.js"></script>
+<script>
+////////////
+AdobeAn.makeResponsive = function(isResp, respDim, isScale, scaleType, domContainers) {
+	window.addEventListener('resize', resizeCanvas);
+	resizeCanvas();
+	function resizeCanvas() {
+		var w = getWindowSize().width, h = getWindowSize().height;
+		var pRatio = window.devicePixelRatio || 1;		
+		
+		domContainers[0].width = w * pRatio;
+		domContainers[0].height = h * pRatio;
+		domContainers.forEach(function(container) {
+			container.style.width = w + 'px';
+			container.style.height = h + 'px';
+		});
+		stage.scaleX = pRatio;
+		stage.scaleY = pRatio;
+		stage.tickOnUpdate = false;
+		stage.update();
+		stage.tickOnUpdate = true;
+	}
+}////////////
+
+
+var canvas, stage, exportRoot, anim_container, fnStartAnimation;
+function init() {
+	canvas = document.getElementById("canvas");
+	anim_container = document.getElementById("animation_container");
+	var comp=AdobeAn.getComposition(Object.keys(AdobeAn.compositions)[0]);
+	var lib=comp.getLibrary();
+	var loader = new createjs.LoadQueue(false);
+	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
+	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
+	var lib=comp.getLibrary();
+	loader.loadManifest(lib.properties.manifest);
+	///////
+	canvas.addEventListener("click", function(){
+        // console.log("click");
+        window.callClick();
+        
+    });
+	 ////////
+}
+function handleFileLoad(evt, comp) {
+	var images=comp.getImages();	
+	if (evt && (evt.item.type == "image")) { images[evt.item.id] = evt.result; }	
+}
+function handleComplete(evt,comp) {
+	var lib=comp.getLibrary();
+	var ss=comp.getSpriteSheet();
+	var queue = evt.target;
+	var ssMetadata = lib.ssMetadata;
+	for(i=0; i<ssMetadata.length; i++) {
+		ss[ssMetadata[i].name] = new createjs.SpriteSheet( {"images": [queue.getResult(ssMetadata[i].name)], "frames": ssMetadata[i].frames} )
+	}
+	exportRoot = new lib.index();
+	stage = new lib.Stage(canvas);
+	stage.enableMouseOver();	
+	fnStartAnimation = function() {
+		stage.addChild(exportRoot);
+		createjs.Ticker.framerate = lib.properties.fps;
+		createjs.Ticker.addEventListener("tick", stage);
+	}
+	AdobeAn.makeResponsive(true,'both',true,1,[canvas,anim_container]);	
+	AdobeAn.compositionLoaded(lib.properties.id);
+	fnStartAnimation();
+
+}
+</script>
+<style type="text/css">
+	#animation_container{
+		background: url(images/bg.jpg) center / cover;
+	}
+</style>
+</head>
+<body onload="init();" style="margin:0px;" cfapps-selector="body">
+<div id="animation_container" style="width: 1281px; height: 90px;">
+<div id="clickTagLayer" style="position: absolute; top: 0; left: 0; z-index: 16777271; width: 100%; height: 100%; cursor: pointer; cursor: hand"></div>
+<canvas id="canvas" width="1281" height="90" style="width: 1281px; height: 90px;"></canvas>
+</div>
+<script>
+function getUrlVars() {
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            vars[key] = value;
+        });
+        return vars;
+    }
+
+  var layer = document.getElementById("clickTagLayer");
+  if (layer) {
+    var listen = function(obj, e, fn) { if (obj.addEventListener) { obj.addEventListener(e, fn, false); } else { obj.attachEvent("on"+e, fn); } };    listen(layer, 'click', function (evt) {
+      evt.stopPropagation();
+      try { evt.cancelBubble(); } catch (e) { /* ignore */ }
+  
+        window.open(decodeURIComponent(getUrlVars()['dataUrl']), '_blank');
+    });
+  }
+</script>
+
+<cloudflare-app><script>
+let theCookies = document.cookie.split(';');for (var i = 0 ; i < theCookies.length; i++) {document.cookie = theCookies[i].split('=')[0] + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';}
+</script></cloudflare-app></body></html>
