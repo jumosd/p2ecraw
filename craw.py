@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from fuction_set import detailpagelist
+
 
 
 
@@ -157,8 +159,13 @@ while cur_page <= 9:
                
             None
             
-    cur_page += 1 
+    cur_page += 1
+
 wb.save("excel_1.xlsx")
+
+detailpagelist = detailpagelist()
+
+
 
 
 
