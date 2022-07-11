@@ -163,7 +163,7 @@ while cur_page <= 9:
 
 wb.save("excel_1.xlsx")
 
-detailpagelist = detailpagelist()
+
 
 
 
