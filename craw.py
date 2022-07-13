@@ -1,3 +1,5 @@
+from asyncore import write
+from webbrowser import BaseBrowser
 import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -8,10 +10,15 @@ from urllib.request import urlopen
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import dload
 
-from fuction_set import detailpagelist
+
+from selenium.webdriver.chrome.service import Service
 
 
+
+
+# DeleteAllFiles('./Result/')
 
 
 # 2. 내가 작업할 Workbook 생성하기 
@@ -24,8 +31,14 @@ sheet.append(["순위","게임이름", "장르", "네트워크", "디바이스",
 cur_page = 1
 rank_num = 0
 
-while cur_page <= 9:
+Folder_names = []
+
+
+
+while cur_page <= 1:
     url = f"https://playtoearn.net/blockchaingames/All-Blockchain/All-Genre/Live/All-Device/All-NFT/All-PlayToEarn/All-FreeToPlay?sort=socialscore_24h&amp%3Bdirection=desc&amp%3Bpage=%7Bcur_page2&direction=desc&page={str(cur_page)}"
+    
+    
     
     driver=webdriver.Chrome('./chromedriver 5') 
     driver.get(url)
@@ -131,7 +144,7 @@ while cur_page <= 9:
                     Folder_name = (str(rank_num) + "_" + str(p2egame_list['name'][idx]))
                     # if 페이지를 가져오면 밑에꺼출력
                     os.mkdir('./Result/'+Folder_name)
-                    
+                    Folder_names.append(Folder_name)
                     # # 이부분 이 이상
                     # req_get_txt = requests.get(detail_url).text
                     # print(req_get_txt)
@@ -162,6 +175,75 @@ while cur_page <= 9:
     cur_page += 1
 
 wb.save("excel_1.xlsx")
+
+
+# data_only=True로 해줘야 수식이 아닌 값으로 받아온다.
+
+load_wb = openpyxl.load_workbook("/Users/hajinsu/Documents/쌀먹프로젝트 1000억 매출/컨텐츠 자동화 연구소/excel_1.xlsx", data_only=True)
+# 시트 이름으로 불러오기 
+load_ws = load_wb['Sheet']
+
+detail_page_sheet = list(load_ws.columns)[8]
+detail_page_list=[]
+for cell_obj in detail_page_sheet[1:]:
+
+    detail_page_list.append(cell_obj.value)
+
+load_wb.close()
+# options = webdriver.ChromeOptions()
+# options.add_argument('User-Agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36"')
+    
+for detail,Folder_name in zip(detail_page_list ,Folder_names) :
+    print(detail)
+   
+    time.sleep(5)
+    service = Service('./chromedriver 5')
+    driver=webdriver.Chrome('./chromedriver 5',service = service)
+    
+    driver.get(detail)
+    
+    
+    
+    icon_img = driver.find_element(By.CSS_SELECTOR, "div.dapp_profilepic > img")
+    icon_url = icon_img.get_attribute('src')
+    game_dec = driver.find_element(By.CSS_SELECTOR, "div.col-12.col-lg-8.col-xl-9 > div > p").text
+    main_link = driver.find_element(By.CSS_SELECTOR, "body > div.container > div.details.gamepage > div > div > div:nth-child(1) > div > div.col-12.col-lg-4.col-xl-3 > div.social > a:nth-child(1) > div").get_attribute('href')
+    # twitter_link = driver.find_element(By.CSS_SELECTOR, "div.col-12.col-lg-8.col-xl-9 > div > p").text
+
+
+
+    print(main_link)
+    f = open(f'./Result/{Folder_name}/dec.txt','w')
+    f.write(game_dec)
+    f.close()
+
+
+    path = f'./Result/{Folder_name}'
+    
+
+    
+
+    # 폴더가없으면 폴더이름으로 생성
+    if not os.path.isdir(path):
+        os.mkdir(path)
+        
+
+    dload.save(icon_url, f'{path}/icon.jpg')
+    
+    #이미지를 저장할 폴더
+
+    # for Folder_name in Folder_names:
+    #     img_down_folder = f'./Result/{Folder_name}'
+    #     print('폴더이름: ' + img_down_folder)
+    #     # 폴더가없으면 폴더이름으로 생성
+    #     if not os.path.isdir(img_down_folder):
+    #         os.mkdir(img_down_folder)
+
+    #     dload.save(icon_url, f'{img_down_folder}/icon.jpg') 
+    # driver.switch_to.window(driver.window_handles[-1])    
+
+driver.quit()
+
 
 
 
